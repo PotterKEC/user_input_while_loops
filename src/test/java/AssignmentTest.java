@@ -1,37 +1,60 @@
+
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AssignmentTest {
-    @Test
-    public void testConditions() {
-        Assignment assignment = new Assignment();
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        
-        assignment.runConditions();
-        String output = outContent.toString();
-        
-        // Test that all conditions were met and printed their success messages
-        assertTrue(output.contains("First condition passed!"), "First condition should pass");
-        assertTrue(output.contains("Second condition passed!"), "Second condition should pass");
-        assertTrue(output.contains("Third condition passed!"), "Third condition should pass");
-        assertTrue(output.contains("Fourth condition passed!"), "Fourth condition should pass");
-        assertTrue(output.contains("Fifth condition passed!"), "Fifth condition should pass");
-        
-        // Test that no additional print statements were added
-        assertEquals(5, output.split("\n").length, "There should be exactly 5 print statements");
+    
+    @BeforeEach
+    void setUp() {
+        // Reset scanner before each test if needed
+        Assignment.scanner.reset();
     }
-
+    
     @Test
-    public void testInitialValues() {
-        Assignment assignment = new Assignment();
+    void testRepeatWord() {
+        assertEquals("hello hello hello", Assignment.repeatWord("hello", 3).trim(),
+            "Word should be repeated correct number of times");
         
-        // Verify initial values haven't been changed
-        assertEquals(42, assignment.getNumber1(), "number1 should be 42");
-        assertEquals(7, assignment.getNumber2(), "number2 should be 7");
-        assertEquals(3.14, assignment.getDecimal(), 0.001, "decimal should be 3.14");
-        assertEquals("123", assignment.getText(), "text should be \"123\"");
+        assertEquals("test test", Assignment.repeatWord("test", 2).trim(),
+            "Word should be repeated correct number of times");
+        
+        assertEquals("java", Assignment.repeatWord("java", 1).trim(),
+            "Word should appear once when times = 1");
+        
+        assertEquals("", Assignment.repeatWord("word", 0).trim(),
+            "Should return empty string when times = 0");
     }
+    
+    @Test
+    void testCreatePyramid() {
+        String expected3 = "1\n22\n333";
+        String actual3 = Assignment.createPyramid(3).trim();
+        assertEquals(expected3, actual3,
+            "Pyramid should have correct pattern for n=3");
+        
+        String expected4 = "1\n22\n333\n4444";
+        String actual4 = Assignment.createPyramid(4).trim();
+        assertEquals(expected4, actual4,
+            "Pyramid should have correct pattern for n=4");
+    }
+    
+    
+    
+    
+    
+    @Test
+    void testCountTo() {
+        assertEquals("1 2 Fizz 4 Buzz", Assignment.countTo(5).trim(),
+            "Should correctly handle numbers 1-5");
+        
+        assertEquals("1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz", Assignment.countTo(10).trim(),
+            "Should correctly handle numbers 1-10");
+        
+        String result15 = Assignment.countTo(15).trim();
+        assertTrue(result15.contains("FizzBuzz"),
+            "Should contain FizzBuzz for number 15");
+    }
+    
+   
 }
